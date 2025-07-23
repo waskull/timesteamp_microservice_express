@@ -7,8 +7,14 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
 });
 
+app.get("/api", function (req, res) {
+  const date = new Date();
+  const utc = date.toUTCString();
+  return res.json({ "unix": date.getTime(), "utc": utc });
+});
+
 app.get("/api/:date", function (req, res) {
-  try {    
+  try {
     if (Number(req.params.date)) {
       const unixDate = parseInt(req.params.date);
       const milliseconds = unixDate * 1000;
