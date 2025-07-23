@@ -17,14 +17,16 @@ app.get("/api/:date", function (req, res) {
   try {
     if (Number(req.params.date)) {
       const unixDate = parseInt(req.params.date);
-      const milliseconds = unixDate * 1000;
-      const date = new Date(milliseconds);
+      const date = new Date(unixDate);
       const utc = date.toUTCString();
       return res.json({ "unix": unixDate, "utc": utc });
     }
-    const date = new Date(req.params.date);
-    const utc = date.toUTCString();
-    return res.json({ "unix": date.getTime(), "utc": utc });
+    else if (Date.parse(req.params.date)) {
+      const date = new Date(req.params.date);
+      const utc = date.toUTCString();
+      return res.json({ "unix": date.getTime(), "utc": utc });
+    }
+    return res.json({ error: "Invalid Date" });
   } catch (e) {
     return res.json({ error: "Invalid Date" });
   }
